@@ -16,6 +16,7 @@ paths:
               required:
                 - number
                 - csv
+                - token
               properties:
                 number:
                   type: string
@@ -23,6 +24,11 @@ paths:
                 csv:
                   type: string
                   description: Card security code
+                token:
+                  type: number
+                  description: Auth token between 1000 and 2000
+                  minimum: 1000
+                  maximum: 2000
       responses:
         '200':
           description: Validation result
@@ -33,3 +39,10 @@ paths:
                 enum:
                   - VALID
                   - INVALID
+        '400':
+          description: Invalid token
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: INVALID TOKEN

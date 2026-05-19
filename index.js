@@ -33,9 +33,31 @@ const CARDS = [
 ];
 
 app.post('/validate', (req, res) => {
-  const { number, csv } = req.body;
+  const { number, csv, token } = req.body;
+
+  if (typeof token !== 'number' || token < 1000 || token > 2000) {
+    return res.status(400).send('INVALID TOKEN');
+  }
+
   const match = CARDS.find(c => c.number === number && c.csv === csv);
   res.send(match ? 'VALID' : 'INVALID');
+});
+
+app.get('/', (req, res) => {
+  const rows = CARDS.map(c => `<tr><td>${c.number}</td><td>${c.csv}</td></tr>`).join('');
+  res.send(`<!DOCTYPE html>
+<html>
+<head><title>Cards</title><style>
+  body { font-family: monospace; background: #111; color: #0f0; padding: 2rem; }
+  table { border-collapse: collapse; }
+  td { padding: 4px 12px; border-bottom: 1px solid #333; }
+</style></head>
+<body>
+<h1>Credit Cards</h1>
+<table><tr><th>Number</th><th>CSV</th></tr>${rows}</table>
+<p><a href="/docs" style="color:#0f0">API Docs</a></p>
+</body>
+</html>`);
 });
 
 const PORT = process.env.PORT || 3000;
