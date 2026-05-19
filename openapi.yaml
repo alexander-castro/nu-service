@@ -1,0 +1,35 @@
+openapi: 3.0.3
+info:
+  title: Credit Card Validation Service
+  version: 1.0.0
+
+paths:
+  /validate:
+    post:
+      summary: Validate a credit card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - number
+                - csv
+              properties:
+                number:
+                  type: string
+                  description: Credit card number
+                csv:
+                  type: string
+                  description: Card security code
+      responses:
+        '200':
+          description: Validation result
+          content:
+            text/plain:
+              schema:
+                type: string
+                enum:
+                  - VALID
+                  - INVALID

@@ -1,7 +1,13 @@
 const express = require('express');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yaml');
+const fs = require('fs');
 
 const app = express();
 app.use(express.json());
+
+const spec = YAML.parse(fs.readFileSync('./openapi.yaml', 'utf8'));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 const CARDS = [
   { number: '4532015112830366', csv: '123' },
